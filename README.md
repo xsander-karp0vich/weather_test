@@ -1,4 +1,4 @@
-### WEATHER APP ⛅️
+### WEATHER APP <img src="assets/cloudy_icon.png" alt="" style="width: 25px; height: 25px;">
 ________________________________________
 #### The project uses the following technologies:
 ________________________________________
