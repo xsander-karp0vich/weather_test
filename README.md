@@ -1,6 +1,6 @@
 ## WEATHER APP 
 ________________________________________
-### The project uses the following technologies: 🚀
+### 🚀 The project uses the following technologies: 
 #### - Java
 #### - RxJava 
 #### - Retrofit 
