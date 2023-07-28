@@ -1,6 +1,7 @@
-## WEATHER APP 
+## WEATHER APP <img src="assets/cloudy_icon.png" alt="" style="width: 22px; height: 22px;">
+
 ________________________________________
-### The project uses the following technologies:
+### The project uses the following technologies: 🚀
 #### - Java
 #### - RxJava
 #### - Retrofit
