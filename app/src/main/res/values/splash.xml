@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- Set the splash screen background, animated icon, and animation duration. -->
+        <item name="windowSplashScreenBackground">@color/main_color</item>
+
+        <!-- Use windowSplashScreenAnimatedIcon to add either a drawable or an
+             animated drawable. One of these is required. -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/weather_test_splash_screen_icon1024x1024</item>
+        <!-- Required for animated icons -->
+        <item name="postSplashScreenTheme">@style/Theme.Weather_test</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+
+    </style>
+</resources>
