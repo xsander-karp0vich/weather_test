@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="total_white">#FFFFFFFF</color>
     <color name="main_color">#8145FF</color>
+    <color name="white">#EFEFEF</color>
+    <color name="main_bg_weather_item">#8147FD</color>
 </resources>

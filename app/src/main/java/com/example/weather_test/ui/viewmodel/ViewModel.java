@@ -27,12 +27,7 @@ public class ViewModel extends AndroidViewModel {
     FusedLocationProviderClient fusedLocationProviderClient;
     private MutableLiveData<Double> latitude = new MutableLiveData<>();
     private MutableLiveData<Double> longitude = new MutableLiveData<>();
-    public LiveData<Double> getLatitude() {
-        return latitude;
-    }
-    public LiveData<Double> getLongitude() {
-        return longitude;
-    }
+
 
     public ViewModel(@NonNull Application application) {
         super(application);

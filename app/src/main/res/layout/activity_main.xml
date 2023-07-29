@@ -4,15 +4,164 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
+    android:padding="10dp"
     tools:context=".ui.activity.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/currentDateTextView"
+            android:text="Today, 21 Jun"
+            android:textSize="18sp"
+            android:textColor="@color/total_white"
+            android:fontFamily="@font/degular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:alpha="0.5" />
+
+        <TextView
+            android:id="@+id/currentCityTextView"
+            android:text="ALANYA"
+            android:textSize="42sp"
+            android:textColor="@color/total_white"
+            android:fontFamily="@font/degular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/currentDateTextView" />
+
+        <ImageButton
+            android:src="@drawable/menu_icon_svg40x40"
+            android:background="#8147FD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/currentCityTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/currentDateTextView" />
+
+        <ImageView
+            android:id="@+id/weatherImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/weather_type_sunny"
+            app:layout_constraintDimensionRatio="5:4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currentCityTextView" />
+
+        <TextView
+            android:paddingBottom="25dp"
+            android:paddingTop="25dp"
+            android:text="It's sunny!"
+            android:textSize="42sp"
+            android:id="@+id/weatherTypeTextView"
+            android:fontFamily="@font/degular"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherImageView" />
+
+        <TextView
+            android:id="@+id/wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/degular"
+            android:text="Wind"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/windTextView"
+            app:layout_constraintEnd_toEndOf="@+id/windTextView"
+            app:layout_constraintStart_toStartOf="@+id/windTextView" />
+
+        <TextView
+            android:id="@+id/windTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/degular"
+            android:text="2 m/s"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherTypeTextView" />
+
+        <TextView
+            android:id="@+id/temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/degular"
+            android:text="Temp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/weatherTypeTextView"
+            app:layout_constraintEnd_toEndOf="@+id/tempTextView"
+            app:layout_constraintStart_toStartOf="@+id/tempTextView" />
+
+        <TextView
+            android:id="@+id/tempTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/degular"
+            android:text="30°C"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherTypeTextView" />
+
+        <TextView
+            android:id="@+id/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/degular"
+            android:text="Humidity"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/humidityTextView"
+            app:layout_constraintEnd_toEndOf="@+id/humidityTextView"
+            app:layout_constraintStart_toStartOf="@+id/humidityTextView" />
+
+        <TextView
+            android:id="@+id/humidityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/degular"
+            android:text="25%"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherTypeTextView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/weatherRecycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tempTextView" />
+
+        <ImageView
+            android:id="@+id/line1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/line_atribut"
+            app:layout_constraintBottom_toBottomOf="@+id/tempTextView"
+            app:layout_constraintEnd_toEndOf="@+id/tempTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/temp" />
+
+        <ImageView
+            android:id="@+id/line2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/line_atribut"
+            app:layout_constraintBottom_toBottomOf="@+id/tempTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tempTextView"
+            app:layout_constraintTop_toTopOf="@+id/temp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
