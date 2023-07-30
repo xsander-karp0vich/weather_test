@@ -10,7 +10,7 @@
 
         <TextView
             android:id="@+id/currentDateTextView"
-            android:text="Today, 21 Jun"
+            tools:text="Today, 21 Jun"
             android:textSize="18sp"
             android:textColor="@color/total_white"
             android:fontFamily="@font/degular"
@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/currentCityTextView"
-            android:text="ALANYA"
+            tools:text="ALANYA"
             android:textSize="42sp"
             android:textColor="@color/total_white"
             android:fontFamily="@font/degular"
@@ -44,7 +44,7 @@
             android:id="@+id/weatherImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/weather_type_sunny"
+            tools:src="@drawable/weather_type_sunny"
             app:layout_constraintDimensionRatio="5:4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
         <TextView
             android:paddingBottom="25dp"
             android:paddingTop="25dp"
-            android:text="It's sunny!"
+            tools:text="It's sunny!"
             android:textSize="42sp"
             android:id="@+id/weatherTypeTextView"
             android:fontFamily="@font/degular"
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
-            android:text="Wind"
+            android:text="@string/wind"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/windTextView"
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
-            android:text="2 m/s"
+            tools:text="2 m/s"
             android:textColor="@color/white"
             android:textSize="32sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
-            android:text="Temp"
+            android:text="@string/temp"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/weatherTypeTextView"
@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
-            android:text="30°C"
+            tools:text="30°C"
             android:textColor="@color/white"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
-            android:text="Humidity"
+            android:text="@string/humidity"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/humidityTextView"
@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
-            android:text="25%"
+            tools:text="25%"
             android:textColor="@color/white"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -149,6 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/line_atribut"
+
             app:layout_constraintBottom_toBottomOf="@+id/tempTextView"
             app:layout_constraintEnd_toEndOf="@+id/tempTextView"
             app:layout_constraintStart_toStartOf="parent"
@@ -163,5 +164,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tempTextView"
             app:layout_constraintTop_toTopOf="@+id/temp" />
+
+        <TextView
+            android:id="@+id/todayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.5"
+            android:fontFamily="@font/degular"
+            android:paddingBottom="10dp"
+            android:text="@string/today"
+            android:textColor="@color/total_white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/weatherRecycleView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/windTextView" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progressBackgroundTint="@color/total_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
