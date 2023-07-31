@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_bg"
+    android:id="@+id/mainActivity"
     android:padding="10dp"
     tools:context=".ui.activity.MainActivity">
 
@@ -33,7 +34,7 @@
 
         <ImageButton
             android:src="@drawable/menu_icon_svg40x40"
-            android:background="#8147FD"
+            android:background="#00FFFFFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/currentCityTextView"
@@ -66,6 +67,7 @@
 
         <TextView
             android:id="@+id/wind"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
@@ -89,6 +91,7 @@
 
         <TextView
             android:id="@+id/temp"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
@@ -113,6 +116,7 @@
 
         <TextView
             android:id="@+id/humidity"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/degular"
@@ -148,6 +152,7 @@
             android:id="@+id/line1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:src="@drawable/line_atribut"
 
             app:layout_constraintBottom_toBottomOf="@+id/tempTextView"
@@ -159,6 +164,7 @@
             android:id="@+id/line2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:src="@drawable/line_atribut"
             app:layout_constraintBottom_toBottomOf="@+id/tempTextView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -170,6 +176,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.5"
+            android:visibility="invisible"
             android:fontFamily="@font/degular"
             android:paddingBottom="10dp"
             android:text="@string/today"

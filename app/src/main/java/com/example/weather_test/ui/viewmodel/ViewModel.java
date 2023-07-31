@@ -2,9 +2,7 @@ package com.example.weather_test.ui.viewmodel;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,21 +10,17 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 
-import com.example.weather_test.api.pojo.Coordinates;
+import com.example.weather_test.api.pojo.weather.Coordinates;
+import com.example.weather_test.api.response.WeatherForecastResponse;
 import com.example.weather_test.api.response.WeatherResponse;
 import com.example.weather_test.api.services.ApiFactory;
-import com.example.weather_test.ui.activity.MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
@@ -34,27 +28,29 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class ViewModel extends AndroidViewModel {
     private String TAG = "TAGTAGTAGTAG";
     private final String API_KEY = "0ae590706091ef379c1aaeb379d4dad8";
     FusedLocationProviderClient fusedLocationProviderClient;
-
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MutableLiveData<WeatherResponse> weatherResponseLiveData = new MutableLiveData<>();
     private MutableLiveData<Coordinates<Double,Double>> coordinates = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     public LiveData<Coordinates<Double, Double>> getCoordinates() {
         return coordinates;
     }
-
     public MutableLiveData<WeatherResponse> getWeatherResponseLiveData() {
         return weatherResponseLiveData;
     }
-
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
     public ViewModel(@NonNull Application application) {
         super(application);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(application);
@@ -84,8 +80,6 @@ public class ViewModel extends AndroidViewModel {
                         }
                     });
         }
-
-
     }
 
     @SuppressLint("CheckResult")
@@ -93,27 +87,57 @@ public class ViewModel extends AndroidViewModel {
         double lat = (double) coordinates.getLatitude();
         double lon = (double) coordinates.getLongitude();
 
-
-        ApiFactory.apiService.loadWeather(lat,lon,API_KEY)
+        Disposable currentWeather = ApiFactory.apiService.loadWeather(lat,lon,API_KEY)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Throwable {
+                        isLoading.setValue(true);
+                    }
+                })
+                .doAfterTerminate(new Action() {
+                    @Override
+                    public void run() throws Throwable {
+                        isLoading.setValue(false);
+                    }
+                })
                 .subscribe(new Consumer<WeatherResponse>() {
                     @Override
                     public void accept(WeatherResponse weatherResponse) throws Throwable {
-                        Log.d(TAG, "REQUEST: "+ weatherResponse.toString());
+                        //Log.d(TAG, "REQUEST: "+ weatherResponse.toString());
                         weatherResponseLiveData.setValue(weatherResponse);
 
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
-                        Log.d(TAG, throwable.toString());
+                       // Log.d(TAG, throwable.toString());
                     }
                 });
+        compositeDisposable.add(currentWeather);
+
+        Disposable weatherForecast = ApiFactory.apiService.loadWeatherForecast(lat,lon,API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<WeatherForecastResponse>() {
+                    @Override
+                    public void accept(WeatherForecastResponse weatherForecastResponse) throws Throwable {
+                        Log.d(TAG, weatherForecastResponse.toString());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+
+                    }
+                });
+        compositeDisposable.add(weatherForecast);
     }
+
 
     @Override
     protected void onCleared() {
         super.onCleared();
+        compositeDisposable.dispose();
     }
 }

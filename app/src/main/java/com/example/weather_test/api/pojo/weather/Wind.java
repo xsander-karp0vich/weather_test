@@ -1,4 +1,4 @@
-package com.example.weather_test.api.pojo;
+package com.example.weather_test.api.pojo.weather;
 
 import com.google.gson.annotations.SerializedName;
 

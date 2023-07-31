@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="90dp"
     android:layout_height="110dp"
     app:cardCornerRadius="20dp"
@@ -11,7 +12,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/weatherIconImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
@@ -21,31 +22,31 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/dataTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.7"
+            android:alpha="0.8"
             android:fontFamily="@font/degular"
-            android:text="11am"
-            android:textColor="@color/white"
+            android:text="11 AM"
+            android:textColor="@color/total_white"
             android:textSize="11sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintBottom_toBottomOf="@+id/weatherIconImageView"
+            app:layout_constraintEnd_toStartOf="@+id/weatherIconImageView" />
 
         <TextView
-            android:layout_margin="5dp"
+            android:id="@+id/tempItemTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:fontFamily="@font/degular"
             android:text="30°C"
             android:textColor="@color/white"
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-            app:layout_constraintStart_toStartOf="@+id/textView" />
-
-
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView"
+            app:layout_constraintVertical_bias="0.36" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

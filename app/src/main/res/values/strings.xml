@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">weather_test</string>
+    <string name="app_name">WeatherSphere</string>
     <string name="today">Today:</string>
     <string name="wind">Wind</string>
     <string name="temp">Temp</string>

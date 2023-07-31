@@ -1,4 +1,4 @@
-package com.example.weather_test.api.pojo;
+package com.example.weather_test.api.pojo.weather;
 
 public class Coordinates<lat, lon> {
     private lat latitude;

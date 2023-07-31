@@ -1,8 +1,8 @@
 package com.example.weather_test.api.response;
 
-import com.example.weather_test.api.pojo.Main;
-import com.example.weather_test.api.pojo.Weather;
-import com.example.weather_test.api.pojo.Wind;
+import com.example.weather_test.api.pojo.weather.Main;
+import com.example.weather_test.api.pojo.weather.Weather;
+import com.example.weather_test.api.pojo.weather.Wind;
 
 import java.util.Arrays;
 
