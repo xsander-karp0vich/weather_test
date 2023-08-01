@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -24,25 +26,32 @@ import android.widget.TextView;
 
 import com.example.weather_test.R;
 import com.example.weather_test.api.pojo.weather.Coordinates;
+import com.example.weather_test.api.pojo.weatherforecast.WeatherList;
 import com.example.weather_test.api.response.WeatherResponse;
+import com.example.weather_test.ui.adapters.WeatherAdapter;
 import com.example.weather_test.ui.viewmodel.ViewModel;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     ViewModel viewModel;
-    private static final int REQUEST_CODE = 100;
+    private static final int REQUEST_CODE = 0;
+    private static final int REQUEST_CODE0 = 1;
 
-    ConstraintLayout mainActivity;
-    TextView currentDataTextView,currentCityTextView,weatherTypeTextView,
+    private ConstraintLayout mainActivity;
+    private TextView currentDataTextView,currentCityTextView,weatherTypeTextView,
             windTextView,tempTextView,humidityTextView,wind,temp,humidity;
-    ImageView weatherImageView,line1,line2;
-    ProgressBar progressBar;
+    private ImageView weatherImageView,line1,line2;
+    private ProgressBar progressBar;
+    private WeatherAdapter weatherAdapter;
+    private RecyclerView weatherRecycleView;
     private final String TAG = "TAGTAGTAGTAG";
+
 
 
     @Override
@@ -55,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
         askPermission(); //calling a method that requests permission
         observeViewModel();
+
+        weatherRecycleView.setAdapter(weatherAdapter);
 
     }
     private void initViews(){
@@ -76,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
         line2 = findViewById(R.id.line2);
 
         weatherImageView = findViewById(R.id.weatherImageView);
+
+        weatherAdapter = new WeatherAdapter();
+
+        weatherRecycleView = findViewById(R.id.weatherRecycleView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        weatherRecycleView.setLayoutManager(layoutManager);
     }
 
     private void askPermission(){
@@ -83,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED){
             // If the permission has already been granted, call the method to get the user's current location.
             viewModel.getCurrentUserLocation();
-
-        } else {
+        }
+        else {
             // If permission is not granted, request it from the user.
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
@@ -99,24 +116,10 @@ public class MainActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 viewModel.getCurrentUserLocation();
             }
-            else {
-               // Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
     private void observeViewModel(){
-        viewModel.getCoordinates().observe(this, new Observer<Coordinates<Double, Double>>() {
-            @Override
-            public void onChanged(Coordinates<Double, Double> coordinates) {
-                Log.d(TAG, "LOCATION: "+coordinates.toString());
-                viewModel.getWeatherDetails(coordinates);
-                updateUI();
-            }
-        });
-
-    }
-    private void updateUI(){
         viewModel.getIsLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLoading) {
@@ -137,6 +140,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        viewModel.getCoordinates().observe(this, new Observer<Coordinates<Double, Double>>() {
+            @Override
+            public void onChanged(Coordinates<Double, Double> coordinates) {
+                Log.d(TAG, "LOCATION: "+coordinates.toString());
+                viewModel.getWeatherDetails(coordinates);
+                updateUI();
+            }
+        });
+
+        viewModel.getWeatherList().observe(this, new Observer<List<WeatherList>>() {
+            @Override
+            public void onChanged(List<WeatherList> weatherLists) {
+                Log.d("ADAPTERRECYCLE", "onChanged: "+weatherLists.toString());
+                weatherAdapter.setWeatherForecast(weatherLists);
+            }
+        });
+
+    }
+    private void updateUI(){
+
         viewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
@@ -290,6 +313,20 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
+            }
+        });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        viewModel.getCurrentUserLocation();
+        viewModel.getCoordinates().observe(this, new Observer<Coordinates<Double, Double>>() {
+            @Override
+            public void onChanged(Coordinates<Double, Double> coordinates) {
+                Log.d(TAG, "LOCATION: "+coordinates.toString());
+                viewModel.getWeatherDetails(coordinates);
+                updateUI();
             }
         });
     }

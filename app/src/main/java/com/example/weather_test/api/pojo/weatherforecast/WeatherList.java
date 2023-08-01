@@ -2,20 +2,29 @@ package com.example.weather_test.api.pojo.weatherforecast;
 
 import com.example.weather_test.api.pojo.weather.Main;
 import com.example.weather_test.api.pojo.weather.Weather;
+import com.example.weather_test.api.pojo.weather.Wind;
 
 import java.util.*;
 
 public class WeatherList {
     public int dt;
-    public MainForecast mainForecast;
+    public Main main;
     public ArrayList<Weather> weather;
+
+    public Wind wind;
+    public int visibility;
+    public int pop;
+
     public String dt_txt;
 
 
-    public WeatherList(int dt, MainForecast mainForecast, ArrayList<Weather> weather, String dt_txt) {
+    public WeatherList(int dt, Main main, ArrayList<Weather> weather, Wind wind, int visibility, int pop, String dt_txt) {
         this.dt = dt;
-        this.mainForecast = mainForecast;
+        this.main = main;
         this.weather = weather;
+        this.wind = wind;
+        this.visibility = visibility;
+        this.pop = pop;
         this.dt_txt = dt_txt;
     }
 
@@ -23,12 +32,24 @@ public class WeatherList {
         return dt;
     }
 
-    public MainForecast getMainForecast() {
-        return mainForecast;
+    public Main getMain() {
+        return main;
     }
 
     public ArrayList<Weather> getWeather() {
         return weather;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
+
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public int getPop() {
+        return pop;
     }
 
     public String getDt_txt() {
@@ -39,8 +60,11 @@ public class WeatherList {
     public String toString() {
         return "WeatherList{" +
                 "dt=" + dt +
-                ", mainForecast=" + mainForecast +
+                ", main=" + main +
                 ", weather=" + weather +
+                ", wind=" + wind +
+                ", visibility=" + visibility +
+                ", pop=" + pop +
                 ", dt_txt='" + dt_txt + '\'' +
                 '}';
     }

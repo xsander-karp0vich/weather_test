@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.weather_test.api.pojo.weather.Coordinates;
+import com.example.weather_test.api.pojo.weatherforecast.WeatherList;
 import com.example.weather_test.api.response.WeatherForecastResponse;
 import com.example.weather_test.api.response.WeatherResponse;
 import com.example.weather_test.api.services.ApiFactory;
@@ -39,18 +42,29 @@ public class ViewModel extends AndroidViewModel {
     private final String API_KEY = "0ae590706091ef379c1aaeb379d4dad8";
     FusedLocationProviderClient fusedLocationProviderClient;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    //LiveData:
     private MutableLiveData<WeatherResponse> weatherResponseLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<WeatherList>> weatherList = new MutableLiveData<>();
     private MutableLiveData<Coordinates<Double,Double>> coordinates = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+
+    //Getters:
     public LiveData<Coordinates<Double, Double>> getCoordinates() {
         return coordinates;
     }
     public MutableLiveData<WeatherResponse> getWeatherResponseLiveData() {
         return weatherResponseLiveData;
     }
+
+    public MutableLiveData<List<WeatherList>> getWeatherList() {
+        return weatherList;
+    }
+
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
+
     public ViewModel(@NonNull Application application) {
         super(application);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(application);
@@ -79,6 +93,11 @@ public class ViewModel extends AndroidViewModel {
                             }
                         }
                     });
+        }
+    }
+    public void getCoarseUserLocation(){
+        if (ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+            Log.d("MYMAAGA", "WORKS");
         }
     }
 
@@ -117,18 +136,24 @@ public class ViewModel extends AndroidViewModel {
                 });
         compositeDisposable.add(currentWeather);
 
-        Disposable weatherForecast = ApiFactory.apiService.loadWeatherForecast(lat,lon,API_KEY)
+        Disposable weatherForecast = ApiFactory.apiService.loadWeatherForecast(lat,lon,5,API_KEY)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<WeatherForecastResponse>() {
                     @Override
                     public void accept(WeatherForecastResponse weatherForecastResponse) throws Throwable {
                         Log.d(TAG, weatherForecastResponse.toString());
+                        List<WeatherList> loadedWeather = weatherList.getValue();
+                        if (loadedWeather!=null){
+                            loadedWeather.addAll(weatherForecastResponse.getList());
+                        } else {
+                            weatherList.setValue(weatherForecastResponse.getList());
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
-
+                        Log.d(TAG, ""+throwable.getMessage());
                     }
                 });
         compositeDisposable.add(weatherForecast);

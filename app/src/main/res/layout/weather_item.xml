@@ -2,14 +2,17 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="90dp"
-    android:layout_height="110dp"
-    app:cardCornerRadius="20dp"
-    android:backgroundTint="@color/main_bg_weather_item">
+    app:cardUseCompatPadding="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/constraintlayout"
+        android:layout_width="90dp"
+        android:layout_height="110dp"
+        android:background="@color/main_bg_weather_item">
+
 
         <ImageView
             android:id="@+id/weatherIconImageView"
@@ -17,7 +20,7 @@
             android:layout_height="50dp"
             android:layout_margin="5dp"
             android:minHeight="250dp"
-            android:src="@drawable/weather_type_sunny"
+            tools:src="@drawable/weather_type_sunny"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
