@@ -1,3 +1,4 @@
+# ❗️❗️❗️NOT FINISHED❗️❗️❗️
 ## WEATHER APP 
 ________________________________________
 ### 🚀 The project uses the following technologies: 
