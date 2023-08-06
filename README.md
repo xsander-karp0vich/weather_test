@@ -10,5 +10,5 @@ ________________________________________
 #### - MVVM
 
 ________________________________________
-<img src="assets/weather_app_git.png" alt="" style="width: 150px; height: 330px;">
+<img src="assets/weather_app_android_large.png" alt="" style="width: 150px; height: 330px;">
 
