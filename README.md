@@ -10,6 +10,5 @@ ________________________________________
 #### - MVVM
 
 ________________________________________
-<img src="assets/readme_main_menu.png" alt="" style="width: 216px; height: 480px;">
-<img src="assets/favorites_menu_readme.png" alt="" style="width: 216px; height: 480px;">
+<img src="assets/weather_app_git.png" alt="" style="width: 150px; height: 330px;">
 
