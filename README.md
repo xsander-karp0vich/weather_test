@@ -5,7 +5,6 @@ ________________________________________
 #### - Java
 #### - RxJava 
 #### - Retrofit 
-#### - Glide 
 ### 🛠 Architecture: 
 #### - MVVM
 
