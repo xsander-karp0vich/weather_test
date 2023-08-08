@@ -9,5 +9,5 @@ ________________________________________
 #### - MVVM
 
 ________________________________________
-<img src="assets/weather_app_android_large.png" alt="" style="width: 150px; height: 330px;">
+<img src="assets/android_screenshot_weather_test.jpg" alt="">
 
