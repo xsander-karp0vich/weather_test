@@ -70,37 +70,37 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
             holder.constraintLayout.setBackgroundResource(R.color.main_bg_weather_item);
         }
         //thunderstorm
-        if (id > 200 && id < 232){
+        if (id >= 200 && id <= 232){
             holder.weatherImageView.setImageResource(R.drawable.weather_type_thunderstorm);
             holder.constraintLayout.setBackgroundResource(R.color.startColorHeavyRainBg);
         }
         //drizzle:
-        if (id > 300 && id < 321){
+        if (id >= 300 && id <= 321){
             holder.weatherImageView.setImageResource(R.drawable.weather_type_drizzle);
             holder.constraintLayout.setBackgroundResource(R.color.startColorRainyBg);
         }
         //rainy:
-        if (id > 500 && id < 504){
+        if (id >= 500 && id <= 504){
             holder.weatherImageView.setImageResource(R.drawable.weather_type_rain1);
             holder.constraintLayout.setBackgroundResource(R.color.startColorRainyBg);
         }
         //heavyRainy:
-        if (id > 504 && id < 531){
+        if (id > 504 && id <= 531){
             holder.weatherImageView.setImageResource(R.drawable.weather_type_heavy_rain);
             holder.constraintLayout.setBackgroundResource(R.color.startColorHeavyRainBg);
         }
         //snowy:
-        if (id > 600 && id < 622){
+        if (id >= 600 && id <= 622){
             holder.weatherImageView.setImageResource(R.drawable.weather_type_snow);
             holder.constraintLayout.setBackgroundResource(R.color.startColorSnowyBg);
         }
         //foggy:
-        if (id > 701 && id < 781){
+        if (id >= 701 && id <= 781){
             holder.weatherImageView.setImageResource(R.drawable.weather_type_mist);
             holder.constraintLayout.setBackgroundResource(R.color.startColorHeavyRainBg);
         }
         //cloudy:
-        if (id > 801 && id < 804){
+        if (id >= 801 && id <= 804){
             holder.weatherImageView.setImageResource(R.drawable.weather_type_cloudy);
             holder.constraintLayout.setBackgroundResource(R.color.startColorHeavyRainBg);
         }

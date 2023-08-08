@@ -15,4 +15,7 @@ public interface ApiService {
 
     @GET("forecast")
     Single<WeatherForecastResponse> loadWeatherForecast(@Query("lat") double lat, @Query("lon") double lon,@Query("cnt") int cnt, @Query("appid") String apiKey);
+
+    @GET("weather")
+    Single<WeatherResponse> loadWeatherByCityName();
 }

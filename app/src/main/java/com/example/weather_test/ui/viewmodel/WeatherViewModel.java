@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -29,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -37,7 +36,7 @@ import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class ViewModel extends AndroidViewModel {
+public class WeatherViewModel extends AndroidViewModel {
     private String TAG = "TAGTAGTAGTAG";
     private final String API_KEY = "0ae590706091ef379c1aaeb379d4dad8";
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -65,42 +64,11 @@ public class ViewModel extends AndroidViewModel {
         return isLoading;
     }
 
-    public ViewModel(@NonNull Application application) {
+    public WeatherViewModel(@NonNull Application application) {
         super(application);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(application);
+        getCurrentUserLocation();
     }
-
-    public void getCurrentUserLocation(){
-        if (ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-            fusedLocationProviderClient.getLastLocation()
-                    .addOnSuccessListener(new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                Geocoder geocoder = new Geocoder(getApplication(), Locale.getDefault());
-                                try {
-                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
-                                    double lat = addresses.get(0).getLatitude();
-                                    double lon = addresses.get(0).getLongitude();
-
-                                    coordinates.setValue(new Coordinates<>(lat,lon));
-
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-
-                            }
-                        }
-                    });
-        }
-    }
-    public void getCoarseUserLocation(){
-        if (ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-            Log.d("MYMAAGA", "WORKS");
-        }
-    }
-
     @SuppressLint("CheckResult")
     public void getWeatherDetails(Coordinates coordinates){
         double lat = (double) coordinates.getLatitude();
@@ -131,7 +99,7 @@ public class ViewModel extends AndroidViewModel {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
-                       // Log.d(TAG, throwable.toString());
+                        // Log.d(TAG, throwable.toString());
                     }
                 });
         compositeDisposable.add(currentWeather);
@@ -158,6 +126,60 @@ public class ViewModel extends AndroidViewModel {
                 });
         compositeDisposable.add(weatherForecast);
     }
+
+    public void getCurrentUserLocation(){
+        if (ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                Geocoder geocoder = new Geocoder(getApplication(), Locale.getDefault());
+                                try {
+                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+                                    double lat = addresses.get(0).getLatitude();
+                                    double lon = addresses.get(0).getLongitude();
+
+                                    coordinates.setValue(new Coordinates<>(lat,lon));
+                                    if (coordinates!=null){
+                                        getWeatherDetails(Objects.requireNonNull(coordinates.getValue()));
+                                    }
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+                            }
+                        }
+                    });
+        }
+        else if (ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                Geocoder geocoder = new Geocoder(getApplication(), Locale.getDefault());
+                                try {
+                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+                                    double lat = addresses.get(0).getLatitude();
+                                    double lon = addresses.get(0).getLongitude();
+
+                                    coordinates.setValue(new Coordinates<>(lat,lon));
+                                    if (coordinates!=null){
+                                        getWeatherDetails(Objects.requireNonNull(coordinates.getValue()));
+                                    }
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+                            }
+                        }
+                    });
+        }
+    }
+
 
 
     @Override

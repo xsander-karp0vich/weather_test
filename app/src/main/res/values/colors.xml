@@ -4,13 +4,21 @@
     <color name="total_white">#FFFFFFFF</color>
     <color name="main_color">#8145FF</color>
     <color name="white">#EFEFEF</color>
+
     <color name="main_bg_weather_item">#8147FD</color>
+
     <color name="startColorHotBg">#2980B9</color>
     <color name="endColorHotBg">#6DD5FA</color>
+
     <color name="startColorHeavyRainBg">#BDC3C7</color>
     <color name="endColorHeavyRainBg">#2C3E50</color>
-    <color name="startColorSnowyBg">#9BF8F4</color>
-    <color name="endColorSnowyBg">#6F7BF7</color>
+
+    <color name="startColorSnowyBg">#5AB2F7</color>
+    <color name="endColorSnowyBg">#0974F1</color>
+
     <color name="startColorRainyBg">#597EF7</color>
     <color name="endColorRainyBg">#B0C4DE</color>
+
+    <color name="startColorMainBg">#8147FD</color>
+    <color name="endColorMainBg">#866DE4</color>
 </resources>
