@@ -10,10 +10,9 @@ public class WeatherList {
     public int dt;
     public Main main;
     public ArrayList<Weather> weather;
-
     public Wind wind;
-    public int visibility;
-    public int pop;
+    public double visibility;
+    public double pop;
 
     public String dt_txt;
 
@@ -44,11 +43,11 @@ public class WeatherList {
         return wind;
     }
 
-    public int getVisibility() {
+    public double getVisibility() {
         return visibility;
     }
 
-    public int getPop() {
+    public double getPop() {
         return pop;
     }
 

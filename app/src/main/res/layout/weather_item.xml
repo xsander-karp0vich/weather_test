@@ -8,10 +8,10 @@
     app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintlayout"
+        android:id="@+id/constraintlayoutWeatherItem"
         android:layout_width="80dp"
         android:layout_height="100dp"
-        android:background="@color/main_bg_weather_item">
+        tools:background="@color/main_bg_weather_item">
 
 
         <ImageView

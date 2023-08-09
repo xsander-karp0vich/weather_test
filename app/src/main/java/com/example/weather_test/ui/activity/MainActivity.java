@@ -13,13 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -35,6 +39,7 @@ import com.example.weather_test.ui.viewmodel.WeatherViewModel;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -55,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "TAGTAGTAGTAG";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this); //SplashScreen
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             viewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         }
         updateUI();
+        clickListener();
     }
     private void initViews(){
 
@@ -95,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         weatherRecycleView = findViewById(R.id.weatherRecycleView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         weatherRecycleView.setLayoutManager(layoutManager);
+
+
     }
 
     private void askPermission(){
@@ -128,40 +135,78 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    public void clickListener() {
+        currentCityEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String city = currentCityEditText.getText().toString().trim();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(currentCityEditText.getWindowToken(), 0);
+                    if (!city.isEmpty()){
+                        viewModel.getWeatherDetailsByCity(city);
+                        updateIsLoading();
+                        currentCityEditText.setText("");
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
+    private void updateIsLoading(){
+        viewModel.getIsLoading().observe(MainActivity.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                if (isLoading) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    weatherTypeTextView.setVisibility(View.INVISIBLE);
+                    wind.setVisibility(View.INVISIBLE);
+                    windTextView.setVisibility(View.INVISIBLE);
+                    temp.setVisibility(View.INVISIBLE);
+                    tempTextView.setVisibility(View.INVISIBLE);
+                    humidity.setVisibility(View.INVISIBLE);
+                    humidityTextView.setVisibility(View.INVISIBLE);
+                    line1.setVisibility(View.INVISIBLE);
+                    line2.setVisibility(View.INVISIBLE);
+                    todayTextView.setVisibility(View.INVISIBLE);
+                    weatherImageView.setVisibility(View.INVISIBLE);
+                    weatherRecycleView.setVisibility(View.INVISIBLE);
+                    currentCityEditText.setVisibility(View.INVISIBLE);
+                    currentDataTextView.setVisibility(View.INVISIBLE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    wind.setVisibility(View.VISIBLE);
+                    windTextView.setVisibility(View.VISIBLE);
+                    temp.setVisibility(View.VISIBLE);
+                    weatherTypeTextView.setVisibility(View.VISIBLE);
+                    tempTextView.setVisibility(View.VISIBLE);
+                    humidity.setVisibility(View.VISIBLE);
+                    humidityTextView.setVisibility(View.VISIBLE);
+                    line1.setVisibility(View.VISIBLE);
+                    line2.setVisibility(View.VISIBLE);
+                    todayTextView.setVisibility(View.VISIBLE);
+                    currentCityEditText.setVisibility(View.VISIBLE);
+                    weatherImageView.setVisibility(View.VISIBLE);
+                    weatherRecycleView.setVisibility(View.VISIBLE);
+                    currentDataTextView.setVisibility(View.VISIBLE);
+                    currentDataTextView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
     private void updateUI(){
         viewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onChanged(WeatherResponse weatherResponse) {
                 if (weatherResponse!=null){
-                    viewModel.getIsLoading().observe(MainActivity.this, new Observer<Boolean>() {
-                        @Override
-                        public void onChanged(Boolean isLoading) {
-                            if (isLoading) {
-                                progressBar.setVisibility(View.VISIBLE);
-                                wind.setVisibility(View.GONE);
-                                temp.setVisibility(View.GONE);
-                                humidity.setVisibility(View.GONE);
-                                line1.setVisibility(View.GONE);
-                                line2.setVisibility(View.GONE);
-                                todayTextView.setVisibility(View.GONE);
-                                currentCityEditText.setVisibility(View.GONE);
-                            } else {
-                                progressBar.setVisibility(View.GONE);
-                                wind.setVisibility(View.VISIBLE);
-                                temp.setVisibility(View.VISIBLE);
-                                humidity.setVisibility(View.VISIBLE);
-                                line1.setVisibility(View.VISIBLE);
-                                line2.setVisibility(View.VISIBLE);
-                                todayTextView.setVisibility(View.VISIBLE);
-                                currentCityEditText.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
+                    updateIsLoading();
                     viewModel.getWeatherList().observe(MainActivity.this, new Observer<List<WeatherList>>() {
                         @Override
                         public void onChanged(List<WeatherList> weatherLists) {
-                            weatherAdapter.setWeatherForecast(weatherLists);
+                            weatherAdapter.setWeatherForecast(weatherLists, Arrays.asList(weatherResponse.getWeather()));
                         }
                     });
 
@@ -205,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
                         weatherTypeTextView.setText(type);
 
                         mainActivity.setBackgroundResource(R.drawable.heavy_rain_bg);
-
                         currentCityEditText.setBackgroundResource(R.drawable.custom_edit_text_haze);
 
                         Window window = getWindow();
@@ -302,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
                         weatherImageView.setImageDrawable(drawable);
                         String type = "It's sunny!";
                         weatherTypeTextView.setText(type);
-
+                        mainActivity.setBackgroundResource(R.drawable.main_bg);
                         currentCityEditText.setBackgroundResource(R.drawable.custom_edit_text_main);
 
                         Window window = getWindow();
@@ -320,7 +364,6 @@ public class MainActivity extends AppCompatActivity {
                         weatherTypeTextView.setText(type);
 
                         mainActivity.setBackgroundResource(R.drawable.rainy_bg);
-
                         currentCityEditText.setBackgroundResource(R.drawable.custom_edit_text_rainy);
 
 

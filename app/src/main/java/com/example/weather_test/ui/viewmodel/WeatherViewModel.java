@@ -92,7 +92,7 @@ public class WeatherViewModel extends AndroidViewModel {
                 .subscribe(new Consumer<WeatherResponse>() {
                     @Override
                     public void accept(WeatherResponse weatherResponse) throws Throwable {
-                        //Log.d(TAG, "REQUEST: "+ weatherResponse.toString());
+                        Log.d(TAG, "REQUEST: "+ weatherResponse.toString());
                         weatherResponseLiveData.setValue(weatherResponse);
 
                     }
@@ -111,22 +111,66 @@ public class WeatherViewModel extends AndroidViewModel {
                     @Override
                     public void accept(WeatherForecastResponse weatherForecastResponse) throws Throwable {
                         Log.d(TAG, weatherForecastResponse.toString());
-                        List<WeatherList> loadedWeather = weatherList.getValue();
-                        if (loadedWeather!=null){
-                            loadedWeather.addAll(weatherForecastResponse.getList());
-                        } else {
+                        if (weatherForecastResponse!=null) {
                             weatherList.setValue(weatherForecastResponse.getList());
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
-                        Log.d(TAG, ""+throwable.getMessage());
+                        Log.d(TAG, "WEATHERFORECAST"+throwable.getMessage());
                     }
                 });
         compositeDisposable.add(weatherForecast);
     }
+    public void getWeatherDetailsByCity(String city){
+        Disposable weatherCity = ApiFactory.apiService.loadWeatherByCityName(city,API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Throwable {
+                        isLoading.setValue(true);
+                    }
+                })
+                .doAfterTerminate(new Action() {
+                    @Override
+                    public void run() throws Throwable {
+                        isLoading.setValue(false);
+                    }
+                })
+                .subscribe(new Consumer<WeatherResponse>() {
+                    @Override
+                    public void accept(WeatherResponse weatherResponse) throws Throwable {
+                        Log.d(TAG, "REQUEST: "+ weatherResponse.toString());
+                        weatherResponseLiveData.setValue(weatherResponse);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
 
+                    }
+                });
+        compositeDisposable.add(weatherCity);
+        Disposable weatherForecastByCity = ApiFactory.apiService.loadWeatherForecastByCityName(city,5,API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<WeatherForecastResponse>() {
+                    @Override
+                    public void accept(WeatherForecastResponse weatherForecastResponse) throws Throwable {
+                        if (weatherForecastResponse!=null) {
+                            weatherList.setValue(weatherForecastResponse.getList());
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+
+                    }
+                });
+
+        compositeDisposable.add(weatherForecastByCity);
+    }
     public void getCurrentUserLocation(){
         if (ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
             fusedLocationProviderClient.getLastLocation()

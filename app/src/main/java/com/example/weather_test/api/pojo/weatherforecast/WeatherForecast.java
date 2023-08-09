@@ -1,7 +1,7 @@
 package com.example.weather_test.api.pojo.weatherforecast;
 
 public class WeatherForecast {
-    public int id;
+    public double id;
     public String main;
     public String description;
     public String icon;
@@ -13,7 +13,7 @@ public class WeatherForecast {
         this.icon = icon;
     }
 
-    public int getId() {
+    public double getId() {
         return id;
     }
 

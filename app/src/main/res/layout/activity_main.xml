@@ -29,9 +29,10 @@
                     android:id="@+id/currentCityEditText"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    tools:background="@drawable/custom_edit_text_main"
                     android:drawableEnd="@drawable/search_icon_weather_test_svg25x25"
                     android:fontFamily="@font/degular"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/total_white"
                     android:textColorHint="@color/total_white"
@@ -140,6 +141,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/weatherRecycleView"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
