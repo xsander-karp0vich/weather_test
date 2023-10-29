@@ -1,13 +1,7 @@
 
-## WEATHER APP 
-________________________________________
+## WEATHER ⛅️
 ### 🚀 The project uses the following technologies: 
-#### - Java
-#### - RxJava 
-#### - Retrofit 
-### 🛠 Architecture: 
-#### - MVVM
-
+#### RxJava, Retrofit, MVVM
 ________________________________________
 <img src="assets/android_screenshot_weather_test.jpg" alt="" width="100" height="222">
 
